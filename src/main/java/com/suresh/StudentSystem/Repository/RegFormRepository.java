@@ -7,7 +7,8 @@ import com.suresh.StudentSystem.Model.RegForm;
 
 @Repository
 
-
 public interface RegFormRepository extends JpaRepository<RegForm, Integer> {
+	
+    RegForm findByEmail(String email);
 
 }

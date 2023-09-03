@@ -2,6 +2,7 @@ package com.suresh.StudentSystem.Controller;
 
 import java.util.List;
 
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,20 +18,28 @@ import com.suresh.StudentSystem.Service.RegFormService;
 @RestController
 @RequestMapping("/reg")
 public class RegFormController {
-	
+
 	@Autowired
 	private RegFormService regFormService;
-	
+
 	@PostMapping("/add")
 	public String add(@RequestBody RegForm regForm) {
 		regFormService.saveUsers(regForm);
 		return "new User is added";
 	}
-	
+
 	@GetMapping("/getUser")
 	public List<RegForm> getAllUsers() {
 		return regFormService.getAllUsers();
 	}
 
+	@PostMapping("/validate")
+	public boolean validateUser(@RequestBody RegForm regForm) {
+		RegForm userConst = regFormService.getUserByEmail(regForm.getEmail());
+		if (userConst != null && regForm.getPassword().equals(userConst.getPassword())) {
+			return true;
+		}
+		return false;
+	}
 
 }
